@@ -100,7 +100,7 @@ const Users = () => {
             negotiationLimit: 0
         });
         setEditingUser(null);
-        setShowUserForm(false); 
+        setShowUserForm(false);
     };
 
     const handleCreateUser = async (e) => {
@@ -110,9 +110,9 @@ const Users = () => {
             showLoading('Criando usuário...');
             await api.post('/auth/register', formData);
 
-            closeModal(); 
+            closeModal();
 
-            resetForm(); 
+            resetForm();
             await showSuccess('Usuário Criado', 'Usuário criado com sucesso.');
 
             fetchUsers();
@@ -132,7 +132,7 @@ const Users = () => {
             firstName: user.firstName,
             lastName: user.lastName,
             username: user.username,
-            password: '', 
+            password: '',
             role: user.role,
             position: user.position,
             commission: user.commission,
@@ -148,14 +148,14 @@ const Users = () => {
             showLoading('Atualizando usuário...');
             await api.put(`/users/${editingUser.id}`, formData);
 
-            closeModal(); 
-            resetForm(); 
+            closeModal();
+            resetForm();
 
             await showSuccess('Usuário Atualizado', 'Usuário atualizado com sucesso.');
 
             fetchUsers();
         } catch (err) {
-            closeModal(); 
+            closeModal();
             await showError('Erro ao Atualizar Usuário', err.response?.data?.message || 'Falha ao atualizar usuário.');
         }
     };
@@ -237,13 +237,13 @@ const Users = () => {
             )}
 
             {showUserForm && (
-                <div className="modal-overlay">
+                <div className="modal-overlay" onClick={(e) => e.target === e.currentTarget && resetForm()}>
                     <div className="modal-content">
                         <div className="modal-header">
                             <h2>{editingUser ? 'Editar Usuário' : 'Criar Novo Usuário'}</h2>
                             <button
                                 className="btn-close"
-                                onClick={resetForm} 
+                                onClick={resetForm}
                             >
                                 ×
                             </button>
@@ -252,7 +252,7 @@ const Users = () => {
                         <form onSubmit={editingUser ? handleUpdateUser : handleCreateUser} className="modal-form">
                             <div className="form-grid">
                                 <div className="form-group">
-                                    <label>Nome *</label>
+                                    <label>Nome <span className="required">*</span></label>
                                     <input
                                         type="text"
                                         name="firstName"
@@ -263,7 +263,7 @@ const Users = () => {
                                 </div>
 
                                 <div className="form-group">
-                                    <label>Sobrenome *</label>
+                                    <label>Sobrenome <span className="required">*</span></label>
                                     <input
                                         type="text"
                                         name="lastName"
@@ -274,7 +274,7 @@ const Users = () => {
                                 </div>
 
                                 <div className="form-group">
-                                    <label>Usuário *</label>
+                                    <label>Usuário <span className="required">*</span></label>
                                     <input
                                         type="text"
                                         name="username"
@@ -287,7 +287,7 @@ const Users = () => {
 
                                 <div className="form-group">
                                     <label>
-                                        Senha {editingUser ? '(Deixe em branco para manter atual)' : '*'}
+                                        Senha {editingUser ? '(Deixe em branco para manter atual)' : <span className="required">*</span>}
                                     </label>
                                     <input
                                         type="password"
@@ -299,7 +299,7 @@ const Users = () => {
                                 </div>
 
                                 <div className="form-group">
-                                    <label>Cargo/Papel *</label>
+                                    <label>Cargo/Papel <span className="required">*</span></label>
                                     <select
                                         name="role"
                                         value={formData.role}
@@ -353,7 +353,7 @@ const Users = () => {
                                 <button
                                     type="button"
                                     className="btn-secondary"
-                                    onClick={resetForm} 
+                                    onClick={resetForm}
                                 >
                                     Cancelar
                                 </button>

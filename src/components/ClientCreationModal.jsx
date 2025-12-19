@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import api from '../api';
-import { masks, validations } from '../utils/masks'; 
+import { masks, validations } from '../utils/masks';
 
-const ClientCreationModal = ({ 
-    isOpen, 
-    onClose, 
-    onClientCreated, 
+const ClientCreationModal = ({
+    isOpen,
+    onClose,
+    onClientCreated,
     onClientUpdated,
     client,
-    initialData = {}, 
-    mode = 'create' 
+    initialData = {},
+    mode = 'create'
 }) => {
     const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -110,7 +110,7 @@ const ClientCreationModal = ({
             };
 
             let response;
-            
+
             if (mode === 'edit' && client) {
                 response = await api.put(`/clients/${client.id}`, cleanData);
                 if (onClientUpdated) {
@@ -122,7 +122,7 @@ const ClientCreationModal = ({
                     onClientCreated(response.data);
                 }
             }
-            
+
             onClose();
         } catch (err) {
             console.error(`Error ${mode === 'edit' ? 'updating' : 'creating'} client:`, err);
@@ -151,7 +151,7 @@ const ClientCreationModal = ({
     if (!isOpen) return null;
 
     return (
-        <div className="modal-overlay">
+        <div className="modal-overlay" onClick={(e) => e.target === e.currentTarget && onClose()}>
             <div className="modal-content">
                 <div className="modal-header">
                     <h2>{mode === 'edit' ? 'Editar Cliente' : 'Criar Novo Cliente'}</h2>
@@ -161,7 +161,7 @@ const ClientCreationModal = ({
                 <form onSubmit={handleSubmit(onSubmit)} className="modal-form">
                     <div className="form-grid">
                         <div className="form-group">
-                            <label>Nome da Empresa *</label>
+                            <label>Nome da Empresa <span className="required">*</span></label>
                             <input
                                 {...register('company', { required: 'Nome da empresa é obrigatório' })}
                                 placeholder="Digite o nome da empresa"
@@ -205,9 +205,9 @@ const ClientCreationModal = ({
                         </div>
 
                         <div className="form-group">
-                            <label>CNPJ *</label>
+                            <label>CNPJ <span className="required">*</span></label>
                             <input
-                                {...register('companyRegNumber', { 
+                                {...register('companyRegNumber', {
                                     required: 'CNPJ é obrigatório.',
                                     validate: validateCNPJ
                                 })}
@@ -217,12 +217,12 @@ const ClientCreationModal = ({
                             {errors.companyRegNumber && <span className="error">{errors.companyRegNumber.message}</span>}
                         </div>
                     </div>
-                    
+
                     <div className="section-divider">Informações do Responsável</div>
-                    
+
                     <div className="form-grid">
                         <div className="form-group">
-                            <label>Nome Completo *</label>
+                            <label>Nome Completo <span className="required">*</span></label>
                             <input
                                 {...register('principalName', { required: 'Nome do responsável é obrigatório.' })}
                                 placeholder="Nome completo do responsável"
@@ -231,10 +231,10 @@ const ClientCreationModal = ({
                         </div>
 
                         <div className="form-group">
-                            <label>Email *</label>
+                            <label>Email <span className="required">*</span></label>
                             <input
                                 type="email"
-                                {...register('email', { 
+                                {...register('email', {
                                     required: 'Email do responsável é obrigatório.',
                                     pattern: {
                                         value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
@@ -263,9 +263,9 @@ const ClientCreationModal = ({
                         </div>
 
                         <div className="form-group">
-                            <label>CPF do Responsável *</label>
+                            <label>CPF do Responsável <span className="required">*</span></label>
                             <input
-                                {...register('principalTaxId', { 
+                                {...register('principalTaxId', {
                                     required: 'CPF do responsável é obrigatório.',
                                     validate: validateCPF
                                 })}
@@ -281,8 +281,8 @@ const ClientCreationModal = ({
                             Cancelar
                         </button>
                         <button type="submit" className="btn-primary" disabled={isSubmitting}>
-                            {isSubmitting 
-                                ? (mode === 'edit' ? 'Atualizando...' : 'Criando...') 
+                            {isSubmitting
+                                ? (mode === 'edit' ? 'Atualizando...' : 'Criando...')
                                 : (mode === 'edit' ? 'Atualizar Cliente' : 'Criar Cliente')
                             }
                         </button>

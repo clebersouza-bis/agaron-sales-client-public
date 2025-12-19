@@ -122,7 +122,7 @@ const Proposals = () => {
 
     const totalItems = filteredProposals.length;
     const totalPages = Math.ceil(totalItems / itemsPerPage);
-    
+
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
     const currentItems = filteredProposals.slice(indexOfFirstItem, indexOfLastItem);
@@ -130,18 +130,18 @@ const Proposals = () => {
     const getPageNumbers = () => {
         const pages = [];
         const maxVisiblePages = 5;
-        
+
         let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
         let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
-        
+
         if (endPage - startPage + 1 < maxVisiblePages) {
             startPage = Math.max(1, endPage - maxVisiblePages + 1);
         }
-        
+
         for (let i = startPage; i <= endPage; i++) {
             pages.push(i);
         }
-        
+
         return pages;
     };
 
@@ -151,7 +151,7 @@ const Proposals = () => {
 
     const handleItemsPerPageChange = (newItemsPerPage) => {
         setItemsPerPage(newItemsPerPage);
-        setCurrentPage(1); 
+        setCurrentPage(1);
     };
 
     const clearFilters = () => {
@@ -356,6 +356,7 @@ const Proposals = () => {
                 </div>
                 <button
                     className="btn-primary"
+                    id="btn-new-proposal"
                     onClick={() => window.location.href = '/proposals/new'}
                 >
                     Criar nova proposta
@@ -383,6 +384,7 @@ const Proposals = () => {
                     <div className="filters-header-actions">
                         <button
                             className="btn-toggle-filters"
+                            id="btn-toggle-filters"
                             onClick={() => setFiltersExpanded(!filtersExpanded)}
                             title={filtersExpanded ? 'Recolher Filtros' : 'Expandir Filtros'}
                         >
@@ -403,6 +405,7 @@ const Proposals = () => {
                         <div className="filter-group">
                             <label>Buscar</label>
                             <input
+                                id="filter-search"
                                 type="text"
                                 placeholder="Buscar por título, cliente ou vendedor..."
                                 value={searchTerm}
@@ -414,6 +417,7 @@ const Proposals = () => {
                         <div className="filter-group">
                             <label>Aprovação Gerência</label>
                             <select
+                                id="filter-status"
                                 value={statusFilter}
                                 onChange={(e) => setStatusFilter(e.target.value)}
                             >
@@ -453,6 +457,7 @@ const Proposals = () => {
                         <div className="filter-group">
                             <label>Cliente</label>
                             <select
+                                id="filter-client"
                                 value={clientFilter}
                                 onChange={(e) => setClientFilter(e.target.value)}
                             >
@@ -484,7 +489,7 @@ const Proposals = () => {
 
                         <div className="filter-group date-range-group">
                             <label>Data de Criação</label>
-                            <div className="date-inputs">
+                            <div className="date-inputs" id="filter-date">
                                 <input
                                     type="date"
                                     value={dateRange.start}
@@ -553,7 +558,7 @@ const Proposals = () => {
 
             <div className="proposals-table-container">
                 <div className="table-scroll-wrapper">
-                    <table className="proposals-table">
+                    <table className="proposals-table" id="proposals-table">
                         <thead>
                             <tr>
                                 <th className="col-title">ID</th>
@@ -563,9 +568,9 @@ const Proposals = () => {
                                 <th className="col-subtotal">Subtotal</th>
                                 <th className="col-discount">Desconto</th>
                                 <th className="col-total">Total</th>
-                                <th className="col-status">Aprovação Gerência</th>
-                                <th className="col-proposal-status">Status Proposta</th>
-                                <th className="col-contract-status">Status Contrato</th>
+                                <th className="col-status" id="col-status-gerencia">Aprovação Gerência</th>
+                                <th className="col-proposal-status" id="col-status-proposta">Status Proposta</th>
+                                <th className="col-contract-status" id="col-status-contrato">Status Contrato</th>
                                 <th className="col-created">Criação</th>
                                 <th className="col-followup">Follow up</th>
                                 <th className="col-approval">Data Ap. Gerência</th>
@@ -575,8 +580,8 @@ const Proposals = () => {
                         </thead>
                         <tbody>
                             {currentItems.map(proposal => (
-                                <tr 
-                                    key={proposal.id} 
+                                <tr
+                                    key={proposal.id}
                                     className="proposal-row"
                                     onDoubleClick={() => handleRowDoubleClick(proposal)}
                                     style={{ cursor: proposal.canEdit ? 'pointer' : 'default' }}
@@ -773,7 +778,7 @@ const Proposals = () => {
                     <div className="pagination-info">
                         Página {currentPage} de {totalPages} • {totalItems} itens no total
                     </div>
-                    
+
                     <div className="pagination-navigation">
                         <button
                             className="pagination-btn"
@@ -789,7 +794,7 @@ const Proposals = () => {
                         >
                             «
                         </button>
-                        
+
                         {getPageNumbers().map(page => (
                             <button
                                 key={page}
@@ -799,7 +804,7 @@ const Proposals = () => {
                                 {page}
                             </button>
                         ))}
-                        
+
                         <button
                             className="pagination-btn"
                             onClick={() => handlePageChange(currentPage + 1)}
@@ -818,8 +823,8 @@ const Proposals = () => {
 
                     <div className="pagination-items-per-page">
                         <label>Itens por página:</label>
-                        <select 
-                            value={itemsPerPage} 
+                        <select
+                            value={itemsPerPage}
                             onChange={(e) => handleItemsPerPageChange(Number(e.target.value))}
                         >
                             <option value={5}>5</option>
